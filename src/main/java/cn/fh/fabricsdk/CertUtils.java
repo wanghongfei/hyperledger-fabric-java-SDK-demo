@@ -60,6 +60,7 @@ public class CertUtils {
         byte[] certBuf = Files.readAllBytes(Paths.get(dir, name + ".cert"));
         String cert = new String(certBuf);
 
+        // 读取文件, 构造PrivateKey对象
         byte[] keyBuf = Files.readAllBytes(Paths.get(dir, name + ".priv"));
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBuf);
         KeyFactory kf = KeyFactory.getInstance("EC");
