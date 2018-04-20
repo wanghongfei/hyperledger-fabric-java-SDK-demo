@@ -19,7 +19,7 @@ import java.util.Set;
 public class Demo {
     public static void main(String[] args) throws Exception {
         // enroll("admin", "adminpw", "cert");
-        // queryCar();
+        queryCar();
         // updateCar();
         // queryCar();
     }
@@ -56,14 +56,14 @@ public class Demo {
         HFClient client = HFClient.createNewInstance();
         Channel channel = initChannel(client);
 
-        String key = "CAR1";
+        String key = "name";
 
         // 构建proposal
         QueryByChaincodeRequest req = client.newQueryProposalRequest();
         // 指定要调用的chaincode
-        ChaincodeID cid = ChaincodeID.newBuilder().setName("fabcar").build();
+        ChaincodeID cid = ChaincodeID.newBuilder().setName("cert").build();
         req.setChaincodeID(cid);
-        req.setFcn("queryCar");
+        req.setFcn("queryId");
         req.setArgs(key);
         System.out.println("Querying for " + key);
         Collection<ProposalResponse> resps = channel.queryByChaincode(req);
