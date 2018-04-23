@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -100,9 +99,8 @@ public class CertUtils {
      */
     private static PrivateKey loadPrivateKey(Path fileName) throws IOException, GeneralSecurityException {
         PrivateKey key = null;
-        InputStream is = null;
-        try {
-            is = new FileInputStream(fileName.toString());
+
+        try (FileInputStream is = new FileInputStream(fileName.toString())) {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             StringBuilder builder = new StringBuilder();
             boolean inKey = false;
@@ -120,15 +118,17 @@ public class CertUtils {
                     builder.append(line);
                 }
             }
-            //
+
             byte[] encoded = DatatypeConverter.parseBase64Binary(builder.toString());
             PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
             // KeyFactory kf = KeyFactory.getInstance("ECDSA");
             KeyFactory kf = KeyFactory.getInstance("EC");
             key = kf.generatePrivate(keySpec);
-        } finally {
-            is.close();
+
+        } catch (Exception e) {
+            throw e;
         }
+
         return key;
     }
 
